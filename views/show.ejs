@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>User Management</title>
+</head>
+
+<body>
+    <%- include('index.ejs') %>
+    <p>show</p>
+    <ul>
+        <% for(i=0;i<data.length;i++){ %>
+          <li><%= data[i].id%>:<%=data[i].username%>--<%=data[i].address%></li>
+        <% } %>
+    </ul>
+    <% for(i=0 ; i < total_page; i++){%>
+       <a href="?pageNum=<%=i+1%>" id="a">第<%=i+1%>页</a>
+    <% } %>
+    <span>共<%=total_page%>页</span>
+</body>
+
+</html>
