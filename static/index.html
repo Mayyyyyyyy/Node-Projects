@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background: #7F7FD5;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            height: 100vh;
+            width: 100vw;
+            
+        }
+        #content{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+        }
+        h1{
+            text-align: center;
+        }
+        #textarea{
+            width: 40vw;
+            height: 40vh;
+            border-radius: 5px;
+        }
+        #btn{
+            width:80px;
+            height: 40px;
+            background: none;
+            border: 1px solid black;
+            border-radius: 2px;
+        }
+        #btn:hover{
+            background-color: #387d8e;
+        }
+        #left{
+            width: 40vw;
+            height: 80vh;
+        }
+        #right{
+            width: 40vw;
+            height: 80vh;
+            margin-left: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>chat room</h1>
+    <div id="content">
+        <div id="left">
+            <textarea name="textarea" id="textarea"></textarea>
+            <br />
+            <button id="btn">提交</button>
+        </div>
+        <div id="right">
+        
+        </div>
+    </div>
+    <!-- <script src="./js/socket.io.js"></script> -->
+    <!-- <script src="bower_components/socket.io-client/socket.io.js"></script> -->
+    <script src="https://cdn.socket.io/4.5.1/socket.io.js"></script>
+    <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
+    <script type="text/javascript">
+      const socket = io.connect('http://localhost:8080')
+
+      let textarea = document.getElementById('textarea')
+      let btn = document.getElementById('btn')
+      let right = document.getElementById('right')
+      let msg = ''
+
+      btn.onclick=function(){
+          msg = textarea.value
+          console.log('msg from client' ,msg )
+          if(!msg){
+              return
+          }
+          socket.send(msg)
+          textarea.value = ''
+      }
+      socket.on('message',function(info){
+        console.log('info' , info)
+        info.forEach(item=>{
+          let p = document.createElement('p')
+          p.innerText = item.id + ': ' + item.msg
+          right.appendChild(p)
+        })
+      })
+    </script>
+</body>
+</html>
